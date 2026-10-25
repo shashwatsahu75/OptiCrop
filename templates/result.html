@@ -3,34 +3,284 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prediction Result - OptiCrop</title>
+    <title>OptiCrop Recommendation — {{ profile.display_name }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
+<body class="result-body">
     <div class="page-shell result-shell">
-        <header class="topbar">
-            <div>
-                <h1 class="brand">OptiCrop</h1>
-                <p class="tagline">Prediction Output</p>
+        <!-- Top Navbar -->
+        <header class="topbar no-print">
+            <div class="brand-group">
+                <div class="brand-icon">🌱</div>
+                <div>
+                    <h1 class="brand">OptiCrop</h1>
+                    <p class="tagline">Agronomic Intelligence & Field Report</p>
+                </div>
             </div>
-            <span class="badge success-badge">Completed</span>
+            <div class="topbar-actions">
+                <button type="button" onclick="window.print()" class="btn-subtle btn-print">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                    Print Field Report
+                </button>
+                <a href="{{ url_for('home') }}" class="btn-primary btn-nav-back">
+                    ← Evaluate Another Field
+                </a>
+            </div>
         </header>
 
-        <main class="result-wrapper">
-            <section class="result-card">
-                <p class="eyebrow">Recommendation Ready</p>
-                <h2>Best crop for the given values</h2>
-                <div class="prediction-box">
-                    {{ prediction }}
-                </div>
-                <p class="result-note">
-                    This recommendation is generated using the trained machine learning model based on the entered soil and climate values.
-                </p>
+        <!-- Printable Document Header (Appears only on print) -->
+        <div class="print-only print-header">
+            <div class="print-brand">
+                <h2>OptiCrop Precision Agro-Advisory</h2>
+                <p>Automated Soil Diagnostics & Cultivar Recommendation Dossier</p>
+            </div>
+            <div class="print-date">
+                <span>Evaluation Date: Continuous Season Analysis</span>
+            </div>
+        </div>
 
-                <div class="result-actions">
-                    <a href="/" class="secondary-btn">Go Back</a>
+        <main class="result-container">
+            <!-- Hero Best Crop Recommendation Card -->
+            <section class="hero-result-card card-surface">
+                <div class="hero-result-content">
+                    <div class="result-badge-row">
+                        <span class="badge badge-accent">Primary ML Recommendation</span>
+                        <span class="category-pill">{{ profile.category }}</span>
+                    </div>
+
+                    <div class="crop-header-title">
+                        <span class="crop-hero-icon">{{ profile.icon }}</span>
+                        <div>
+                            <h2 class="crop-name">{{ profile.display_name }}</h2>
+                            <p class="crop-summary">{{ profile.summary }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Agronomic Snapshot Cards -->
+                    <div class="snapshot-grid">
+                        <div class="snapshot-item">
+                            <span class="snapshot-label">Sowing / Season</span>
+                            <span class="snapshot-value">{{ profile.season }}</span>
+                        </div>
+                        <div class="snapshot-item">
+                            <span class="snapshot-label">Growth Cycle</span>
+                            <span class="snapshot-value">{{ profile.growth_duration }}</span>
+                        </div>
+                        <div class="snapshot-item">
+                            <span class="snapshot-label">Irrigation Need</span>
+                            <span class="snapshot-value">{{ profile.water_need }}</span>
+                        </div>
+                        <div class="snapshot-item">
+                            <span class="snapshot-label">Ideal Soil Type</span>
+                            <span class="snapshot-value">{{ profile.soil_type }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Confidence Gauge Card -->
+                <div class="confidence-sidebar">
+                    <div class="gauge-card">
+                        <span class="gauge-caption">Model Match Confidence</span>
+                        <div class="gauge-number">{{ confidence }}%</div>
+                        <div class="progress-track">
+                            <div class="progress-fill" style="width: {{ confidence }}%;"></div>
+                        </div>
+                        <span class="confidence-tier">
+                            {% if confidence >= 80 %}
+                                ⭐ High Affinity Match
+                            {% elif confidence >= 50 %}
+                                ⚖️ Moderate Affinity Match
+                            {% else %}
+                                🔍 Secondary Affinity
+                            {% endif %}
+                        </span>
+                    </div>
+
+                    <!-- Top Alternative Crops -->
+                    {% if alternatives %}
+                    <div class="alternatives-box">
+                        <h4 class="alt-title">Alternative Viable Crops</h4>
+                        <div class="alt-list">
+                            {% for alt in alternatives %}
+                            <div class="alt-item">
+                                <span class="alt-icon">{{ alt.icon }}</span>
+                                <div class="alt-info">
+                                    <span class="alt-name">{{ alt.display_name }}</span>
+                                    <span class="alt-cat">{{ alt.category }}</span>
+                                </div>
+                                <span class="alt-prob">{{ alt.confidence }}%</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
             </section>
+
+            <!-- Soil & Environmental Diagnostic Analysis -->
+            <section class="diagnostic-section card-surface">
+                <div class="section-head">
+                    <div class="head-title">
+                        <span class="head-icon">🔬</span>
+                        <div>
+                            <h3>Soil & Environmental Diagnostic Feedback</h3>
+                            <p>Comparison of your field test values with established benchmarks for {{ profile.display_name }}.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input Comparison Table / Metric Grid -->
+                <div class="metric-comparison-grid">
+                    <div class="comp-card">
+                        <div class="comp-head">
+                            <span class="comp-name">Nitrogen (N)</span>
+                            <span class="comp-unit">kg/ha</span>
+                        </div>
+                        <div class="comp-values">
+                            <div class="val-block">
+                                <span class="val-label">Tested</span>
+                                <span class="val-num">{{ inputs.N }}</span>
+                            </div>
+                            <div class="val-divider">vs</div>
+                            <div class="val-block">
+                                <span class="val-label">Crop Benchmark</span>
+                                <span class="val-num">{{ benchmarks.N.min | default(0) }} - {{ benchmarks.N.max | default(100) }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="comp-card">
+                        <div class="comp-head">
+                            <span class="comp-name">Phosphorus (P)</span>
+                            <span class="comp-unit">kg/ha</span>
+                        </div>
+                        <div class="comp-values">
+                            <div class="val-block">
+                                <span class="val-label">Tested</span>
+                                <span class="val-num">{{ inputs.P }}</span>
+                            </div>
+                            <div class="val-divider">vs</div>
+                            <div class="val-block">
+                                <span class="val-label">Crop Benchmark</span>
+                                <span class="val-num">{{ benchmarks.P.min | default(0) }} - {{ benchmarks.P.max | default(100) }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="comp-card">
+                        <div class="comp-head">
+                            <span class="comp-name">Potassium (K)</span>
+                            <span class="comp-unit">kg/ha</span>
+                        </div>
+                        <div class="comp-values">
+                            <div class="val-block">
+                                <span class="val-label">Tested</span>
+                                <span class="val-num">{{ inputs.K }}</span>
+                            </div>
+                            <div class="val-divider">vs</div>
+                            <div class="val-block">
+                                <span class="val-label">Crop Benchmark</span>
+                                <span class="val-num">{{ benchmarks.K.min | default(0) }} - {{ benchmarks.K.max | default(100) }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="comp-card">
+                        <div class="comp-head">
+                            <span class="comp-name">Soil pH</span>
+                            <span class="comp-unit">pH Scale</span>
+                        </div>
+                        <div class="comp-values">
+                            <div class="val-block">
+                                <span class="val-label">Tested</span>
+                                <span class="val-num">{{ inputs.ph }}</span>
+                            </div>
+                            <div class="val-divider">vs</div>
+                            <div class="val-block">
+                                <span class="val-label">Crop Benchmark</span>
+                                <span class="val-num">{{ benchmarks.ph.min | default(5.5) }} - {{ benchmarks.ph.max | default(7.5) }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="comp-card">
+                        <div class="comp-head">
+                            <span class="comp-name">Rainfall</span>
+                            <span class="comp-unit">mm</span>
+                        </div>
+                        <div class="comp-values">
+                            <div class="val-block">
+                                <span class="val-label">Recorded</span>
+                                <span class="val-num">{{ inputs.rainfall }}</span>
+                            </div>
+                            <div class="val-divider">vs</div>
+                            <div class="val-block">
+                                <span class="val-label">Crop Benchmark</span>
+                                <span class="val-num">{{ benchmarks.rainfall.min | default(50) }} - {{ benchmarks.rainfall.max | default(250) }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actionable Remediation Notes -->
+                <div class="advisory-feed">
+                    <h4 class="feed-title">Agronomic Corrections & Advisory Checklist</h4>
+                    <div class="advisory-cards">
+                        {% for item in soil_analysis %}
+                        <div class="advisory-item-card">
+                            <div class="advisory-badge-wrap">
+                                <span class="param-badge">{{ item.param }}</span>
+                                <span class="status-badge {{ item.badge_class }}">{{ item.status }}</span>
+                            </div>
+                            <p class="advisory-msg">{{ item.message }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+
+            <!-- Detailed Agronomic Guides -->
+            <section class="guides-grid">
+                <!-- Fertilizer Management -->
+                <div class="guide-pillar-card card-surface">
+                    <div class="pillar-header">
+                        <span class="pillar-icon">🌾</span>
+                        <h4>Fertilizer & Nutrition Program</h4>
+                    </div>
+                    <p class="pillar-body">{{ profile.fertilizer_guide }}</p>
+                </div>
+
+                <!-- Pest & Disease Defense -->
+                <div class="guide-pillar-card card-surface">
+                    <div class="pillar-header">
+                        <span class="pillar-icon">🛡️</span>
+                        <h4>Pest & Disease Management (IPM)</h4>
+                    </div>
+                    <p class="pillar-body">{{ profile.pest_management }}</p>
+                </div>
+
+                <!-- Economic & Market Viability -->
+                <div class="guide-pillar-card card-surface">
+                    <div class="pillar-header">
+                        <span class="pillar-icon">📈</span>
+                        <h4>Market Outlook & Economic Potential</h4>
+                    </div>
+                    <p class="pillar-body">{{ profile.economic_outlook }}</p>
+                </div>
+            </section>
+
+            <!-- Bottom Action Footer -->
+            <div class="result-footer-actions no-print">
+                <a href="{{ url_for('home') }}" class="btn-secondary">
+                    ← Re-test Parameters
+                </a>
+                <button type="button" onclick="window.print()" class="btn-primary">
+                    🖨️ Print & Save Advisory PDF
+                </button>
+            </div>
         </main>
     </div>
 </body>

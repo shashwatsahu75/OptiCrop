@@ -1,161 +1,197 @@
+# OptiCrop — Smart Agricultural Production & Advisory Engine
 
-# OptiCrop
+[![Python](https://img.shields.io/badge/Python-3.9%20%7C%203.10%20%7C%203.11-blue.svg)](https://www.python.org/)
+[![Flask](https://img.shields.io/badge/Framework-Flask%203.x-green.svg)](https://flask.palletsprojects.com/)
+[![Scikit-Learn](https://img.shields.io/badge/ML-Scikit--Learn%20Random%20Forest-orange.svg)](https://scikit-learn.org/)
+[![Weather API](https://img.shields.io/badge/Climate-Open--Meteo%20Live%20Sync-informational.svg)](https://open-meteo.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-A machine learning-based web application that recommends the most suitable crop based on soil nutrients and environmental conditions. The application leverages a classification model integrated with the Flask web framework to provide real-time crop recommendations through a simple and responsive web interface.
+An intelligent, data-driven precision agricultural platform that recommends optimal crop cultivars based on soil macronutrients and climate telemetry. Powered by a high-precision **Random Forest** classification ensemble, OptiCrop provides multi-class confidence scoring, alternative viable crops, nutrient deficit diagnostics, customized fertilizer advice, and real-time meteorological synchronization.
+
+---
+
 ## Project Links
+
 | Resource | Link |
 |---|---|
-| Live Demo | [https://opticrop-jb42.onrender.com/](https://opticrop-jb42.onrender.com/) |
-| GitHub Repository | [https://github.com/sahushashwat75/OptiCrop](https://github.com/sahushashwat75/OptiCrop) |
+| 🌐 **Live Web Application** | [https://opticrop-jb42.onrender.com/](https://opticrop-jb42.onrender.com/) |
+| 💻 **GitHub Repository** | [https://github.com/shashwatsahu75/OptiCrop](https://github.com/shashwatsahu75/OptiCrop) |
 
-## Project Overview
+---
 
-OptiCrop helps users identify the most suitable crop to grow based on environmental and soil parameters. Traditional farming decisions often rely on experience, but this project uses machine learning to make crop selection more data-driven and efficient. Similar crop recommendation systems analyze soil nutrients and climate variables to support intelligent agricultural decision-making. 
-This project follows the complete machine learning lifecycle, including data preprocessing, model training, evaluation, deployment, and user interaction through a Flask web application. The overall idea is to convert agricultural inputs into an instant crop recommendation through a user-friendly interface.
+## Key Features
 
-## Features
+- **🌱 ML-Powered Cultivar Recommendation**: Calibrated multi-class classification supporting 22 distinct commercial and food security crops.
+- **🎯 Match Confidence & Top-3 Alternatives**: Provides percentage confidence scores along with runner-up viable crops for flexible agricultural planning.
+- **⛅ Real-Time Live Weather Synchronization**: Automatically fetch current ambient temperature, relative humidity, and rainfall estimate using the Open-Meteo API (by city or device GPS) with zero API keys required.
+- **🌾 One-Click Farm Presets**: Instantly load realistic agricultural benchmarks (*Alluvial Rice Paddy, Black Cotton Soil, Himalayan Apple Orchard, Western Ghats Coffee, Semi-Arid Chickpea, Riverbed Melon*).
+- **🧪 Dynamic Soil & Nutrient Gap Analysis**: Compares tested soil parameters ($N$, $P$, $K$, $\text{pH}$) against species-specific benchmarks to identify nutrient deficiencies or excesses.
+- **📋 Actionable Field Advisory**: Provides specific fertilizer amendment steps (e.g. Urea, Single Super Phosphate, MOP, Lime/Gypsum) and Integrated Pest Management (IPM) guidelines.
+- **🖨️ Exportable Field Dossier**: Dedicated print and PDF stylesheet for generating clean, professional field advisory reports for agronomists and farmers.
+- **⚡ Dual Mode (UI + REST API)**: Access via responsive web interface or programmatically via `/api/predict` and `/api/weather`.
 
-- Soil and weather parameter input through an intuitive web interface.
-- Crop recommendation prediction using machine learning.
-- Real-time prediction results.
-- Input validation for all parameters.
-- Responsive and user-friendly interface.
-- Classification-based prediction model.
-- Flask backend integration.
-- Cloud deployment on Render.
+---
 
-## Machine Learning
+## Supported Crops (22 Cultivars)
 
-The following machine learning algorithms were trained and evaluated:
+OptiCrop models 22 agricultural cultivars across cereal grains, legumes, horticulture, and commercial plantation crops:
 
-- Decision Tree
-- Random Forest
-- K-Nearest Neighbors (KNN)
-- SVM
-- XGBoost
+| Category | Cultivars |
+|---|---|
+| **Cereals & Grains** | Rice, Maize |
+| **Pulses & Legumes** | Chickpea, Kidney Beans (Rajma), Pigeonpeas (Arhar), Blackgram (Urad), Mungbean, Mothbeans, Lentil (Masoor) |
+| **Fruits & Melons** | Apple, Banana, Grapes, Mango, Orange, Papaya, Pomegranate, Watermelon, Muskmelon |
+| **Commercial & Fiber** | Cotton, Jute |
+| **Plantation Crops** | Coffee, Coconut |
 
-After performance evaluation, the best-performing model was selected as the final deployed model. Crop recommendation work commonly compares these supervised classification algorithms and chooses the one with the best test performance.
+---
 
 ## Technology Stack
 
 | Layer | Technologies |
 |---|---|
-| Programming Language | Python |
-| Web Framework | Flask |
-| Machine Learning | Scikit-learn, XGBoost |
-| Data Processing | Pandas, NumPy |
-| Model Storage | Joblib / Pickle |
-| Frontend | HTML5, CSS3, Jinja2 |
-| Development Tools | Jupyter Notebook, VS Code |
-| Version Control | Git, GitHub |
-| Deployment | Render |
+| **Programming Language** | Python 3.9+ |
+| **Web Framework** | Flask 3.x, Jinja2, Werkzeug |
+| **Machine Learning** | Scikit-Learn (RandomForestClassifier, 100 Estimators) |
+| **Data Processing** | Pandas, NumPy |
+| **Climate Integration** | Open-Meteo Geocoding & Weather API |
+| **Frontend UI/UX** | HTML5, Modern CSS (Glassmorphism, Responsive Grid, Print Stylesheet), Vanilla JS |
+| **Production Server** | Gunicorn (Procfile configured) |
+| **Deployment Target** | Render / PaaS Cloud |
+
+---
 
 ## Project Structure
 
 ```bash
 OptiCrop/
-│
 ├── static/
-│   ├── pexels-pixabay-207247.jpg
-│   └── style.css
-│
+│   ├── app.js                     # Interactive client (sliders, weather fetch, presets)
+│   ├── pexels-pixabay-207247.jpg   # Agricultural backdrop imagery
+│   └── style.css                  # Modern Agro-Tech design system & print styles
 ├── templates/
-│   ├── home.html
-│   └── result.html
-│
-├── app.py
-├── Crop_recommendation.csv
-├── model_train.py
-├── model.pkl
-├── Procfile
-└── requirements.txt
+│   ├── home.html                  # Main diagnostic input dashboard
+│   └── result.html                # Comprehensive advisory & recommendation dossier
+├── app.py                         # Flask application & REST API routes
+├── crop_advisory.py               # Agronomic knowledge base & diagnostic engine
+├── Crop_recommendation.csv        # Multi-variable agricultural training dataset
+├── model_train.py                 # Model training & serialization pipeline
+├── model.pkl                      # Serialized Random Forest model
+├── test_app.py                    # Unit & integration test suite
+├── Procfile                       # Deployment configuration for Render
+├── requirements.txt               # Python package dependencies
+├── .gitignore                     # Git ignore rules
+└── README.md                      # Documentation
 ```
 
-## Installation
+---
 
-### Clone the repository
-```bash
-git clone https://github.com/sahushashwat75/OptiCrop.git
-```
+## Installation & Local Setup
 
-### Navigate to the project directory
+### 1. Clone the repository
 ```bash
+git clone https://github.com/shashwatsahu75/OptiCrop.git
 cd OptiCrop
 ```
 
-### Create a virtual environment
+### 2. Create and activate a virtual environment
 ```bash
+# Windows
 python -m venv venv
-```
-
-### Activate the virtual environment
-
-**Windows**
-```bash
 venv\Scripts\activate
-```
 
-**Linux / macOS**
-```bash
+# Linux / macOS
+python3 -m venv venv
 source venv/bin/activate
 ```
 
-### Install dependencies
+### 3. Install dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### Run the application
+### 4. Run automated tests
+```bash
+python test_app.py
+```
+
+### 5. Launch the application
 ```bash
 python app.py
 ```
 
-### Open in browser
-```bash
-http://127.0.0.1:5000
+Open your browser at **`http://localhost:5000`**.
+
+---
+
+## REST API Reference
+
+### 1. Predict Best Crop
+**`POST /api/predict`**
+
+*Request body (JSON):*
+```json
+{
+  "N": 90,
+  "P": 42,
+  "K": 43,
+  "temperature": 20.8,
+  "humidity": 82.0,
+  "ph": 6.5,
+  "rainfall": 202.9
+}
 ```
 
-## Input Features
+*Response:*
+```json
+{
+  "status": "success",
+  "data": {
+    "top_crop": "rice",
+    "confidence": 99.0,
+    "alternatives": [
+      {
+        "category": "Commercial Fiber Crop",
+        "confidence": 1.0,
+        "crop": "jute",
+        "display_name": "Jute (Corchorus olitorius)",
+        "icon": "🌾"
+      }
+    ],
+    "soil_analysis": [
+      {
+        "badge_class": "status-success",
+        "message": "Soil Nitrogen is well-aligned (90.0 kg/ha) with Rice's baseline requirements.",
+        "param": "Nitrogen (N)",
+        "status": "Optimal"
+      }
+    ]
+  }
+}
+```
 
-The prediction model uses the following agricultural parameters:
+### 2. Live Weather Query
+**`GET /api/weather?city=Pune`** or **`GET /api/weather?lat=18.52&lon=73.85`**
 
-- Nitrogen
-- Phosphorus
-- Potassium
-- Temperature
-- Humidity
-- pH
-- Rainfall
+*Response:*
+```json
+{
+  "status": "success",
+  "location": "Pune, India",
+  "temperature": 28.9,
+  "humidity": 43.0,
+  "rainfall": 30.0
+}
+```
 
-These are the standard inputs used in crop recommendation systems because they strongly influence which crop will grow best in a given region.
-## Prediction Output
+### 3. Farm Presets
+**`GET /api/presets`**
 
-The system predicts the most suitable crop for the given conditions.
+Returns ready-to-use soil profiles for one-click testing.
 
-## Future Improvements
+---
 
-- Fertilizer recommendation.
-- Crop yield prediction.
-- Live weather API integration.
-- Location-based crop recommendation.
-- Interactive agriculture visualizations.
-- Mobile application.
-- Advanced ensemble or deep learning models.
-- Multilingual support.
-- SMS or email alert system. 
+## Authors & Acknowledgments
 
-## Deployment
-
-The application is deployed on Render and is publicly accessible. 
-
-## Live Application
-
-[https://opticrop-jb42.onrender.com/](https://opticrop-jb42.onrender.com/)
-
-## Authors
-
-- Shashwat Sahu
-
-## License
-
-This project is developed for educational and academic purposes.
+- **Shashwat Sahu** — [GitHub Profile](https://github.com/shashwatsahu75)
+- Open-source dataset sourced from agricultural research trials.
