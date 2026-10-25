@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OptiCrop</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="page-shell">
+        <header class="topbar">
+            <div>
+                <h1 class="brand">OptiCrop</h1>
+                <p class="tagline">Smart Agricultural Production Optimization Engine</p>
+            </div>
+            <span class="badge">ML Powered</span>
+        </header>
+
+        <main class="main-grid">
+            <section class="hero-card hero-visual">
+                <div class="hero-copy">
+                    <p class="eyebrow">Crop Recommendation System</p>
+                    <h2>Find the best crop for your soil and climate conditions.</h2>
+                    <p class="hero-text">
+                        Enter agricultural parameters like N, P, K, temperature, humidity, pH, and rainfall to get an instant crop recommendation.
+                    </p>
+                </div>
+
+                <div class="info-panel">
+                    <h3>Input fields</h3>
+                    <ul>
+                        <li>Nitrogen (N)</li>
+                        <li>Phosphorus (P)</li>
+                        <li>Potassium (K)</li>
+                        <li>Temperature</li>
+                        <li>Humidity</li>
+                        <li>pH Value</li>
+                        <li>Rainfall</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="form-card">
+                <div class="card-head">
+                    <h3>Enter field values</h3>
+                    <p>Fill all values carefully for a better prediction.</p>
+                </div>
+
+                <form action="{{ url_for('predict') }}" method="POST" class="predict-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="N">Nitrogen (N)</label>
+                            <input id="N" type="number" step="any" name="N" placeholder="e.g. 90" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="P">Phosphorus (P)</label>
+                            <input id="P" type="number" step="any" name="P" placeholder="e.g. 42" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="K">Potassium (K)</label>
+                            <input id="K" type="number" step="any" name="K" placeholder="e.g. 43" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="temperature">Temperature</label>
+                            <input id="temperature" type="number" step="any" name="temperature" placeholder="e.g. 20.8" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="humidity">Humidity</label>
+                            <input id="humidity" type="number" step="any" name="humidity" placeholder="e.g. 82" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ph">pH Value</label>
+                            <input id="ph" type="number" step="any" name="ph" placeholder="e.g. 6.5" required>
+                        </div>
+
+                        <div class="form-group form-group-full">
+                            <label for="rainfall">Rainfall</label>
+                            <input id="rainfall" type="number" step="any" name="rainfall" placeholder="e.g. 202.9" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="primary-btn">Predict Best Crop</button>
+                </form>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
